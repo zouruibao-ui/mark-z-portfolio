@@ -51,7 +51,7 @@ export async function POST() {
 
     // Seed editable content
     const existingContent = await getJSON(KEYS.content)
-    if (!existingContent) {
+    if (!existingContent || (Array.isArray(existingContent) && existingContent.length === 0)) {
       await setJSON(KEYS.content, buildSeedContent())
       results.push('Seeded editable content')
     } else {
