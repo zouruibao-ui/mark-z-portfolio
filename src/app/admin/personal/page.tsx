@@ -7,7 +7,7 @@ import {
   Power, PowerOff, Wrench, ChevronDown, ChevronUp, Edit3,
   Copy, Trash2, Plus, ExternalLink, FileText, Layout,
   MessageSquare, Search, Settings, Calendar, RefreshCw, AlertTriangle,
-  CheckCircle2, XCircle, Monitor, Languages, Sparkles
+  CheckCircle2, XCircle, Monitor, Languages, Sparkles, Database
 } from 'lucide-react'
 
 type SiteMode = 'open' | 'maintenance' | 'closed'
@@ -26,6 +26,7 @@ export default function PersonalCenterPage() {
   const [access, setAccess] = useState<any>(null)
   const [layout, setLayout] = useState<any>(null)
   const [content, setContent] = useState<any[]>([])
+  const [storageWarning, setStorageWarning] = useState<string | null>(null)
 
   useEffect(() => {
     const lang = localStorage.getItem('portfolio-language') || 'zh'
@@ -38,16 +39,20 @@ export default function PersonalCenterPage() {
   const loadAll = async () => {
     setLoading(true)
     try {
-      const [statsRes, accessRes, layoutRes, contentRes] = await Promise.all([
+      const [statsRes, accessRes, layoutRes, contentRes, healthRes] = await Promise.all([
         fetch('/api/stats').then(r => r.json()),
         fetch('/api/access').then(r => r.json()),
         fetch('/api/layout').then(r => r.json()),
         fetch('/api/content').then(r => r.json()),
+        fetch('/api/storage/health').then(r => r.json()),
       ])
       if (statsRes.stats) setStats(statsRes.stats)
       if (accessRes.access) setAccess(accessRes.access)
       if (layoutRes.layout) setLayout(layoutRes.layout)
       if (contentRes.content) setContent(contentRes.content)
+      if (healthRes.storageMode === 'EPHEMERAL-MEMORY-ONLY') {
+        setStorageWarning(healthRes.note)
+      }
     } catch (e) {
       console.error('Failed to load personal center data', e)
     }
@@ -187,6 +192,15 @@ export default function PersonalCenterPage() {
         <div className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-600 flex items-center gap-2">
           <CheckCircle2 className="h-4 w-4 shrink-0" />
           {success}
+        </div>
+      )}
+      {storageWarning && (
+        <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700 flex items-start gap-2">
+          <Database className="h-4 w-4 shrink-0 mt-0.5" />
+          <div>
+            <p className="font-medium">{msg('⚠️ 存储警告', '⚠️ Storage Warning')}</p>
+            <p className="text-amber-600">{msg('未配置持久化存储！所有管理操作将在服务冷启动时丢失。请在Vercel项目设置中配置Upstash Redis或Vercel KV。', 'No persistent storage configured! All admin edits will be lost on cold starts. Please configure Upstash Redis or Vercel KV in your Vercel project settings.')}</p>
+          </div>
         </div>
       )}
 

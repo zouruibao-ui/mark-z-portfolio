@@ -72,15 +72,21 @@ async function getKv(): Promise<KV | null> {
   if (_kv !== undefined) return _kv
   _kv = null
   try {
-    if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+    // Support both Upstash-native env vars AND Vercel KV env vars
+    const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || process.env.KV_URL
+    const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN
+    if (url && token) {
       const { Redis } = await import('@upstash/redis')
-      const url = process.env.UPSTASH_REDIS_REST_URL
-      const token = process.env.UPSTASH_REDIS_REST_TOKEN
       const client = new Redis({ url, token })
       _kv = {
         get: (key) => client.get(key),
         set: (key, value, opts) => client.set(key, value, opts as any),
         del: (key) => client.del(key),
+      }
+    } else if (process.env.VERCEL) {
+      // Running on Vercel but no KV configured — log warning once
+      if (typeof console !== 'undefined') {
+        console.warn('[markz] No KV storage configured. Running ephemeral — data will be lost on cold starts.')
       }
     }
   } catch {
