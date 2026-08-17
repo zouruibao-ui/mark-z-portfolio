@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
-import { Mail, Lock, KeyRound, LogIn, ShieldAlert, LayoutDashboard, FolderKanban, Eye, Download } from 'lucide-react'
+import { Mail, Lock, KeyRound, LogIn, ShieldAlert, LayoutDashboard, FolderKanban, Eye, Download, UserCircle } from 'lucide-react'
 
 export default function AdminPage() {
   const router = useRouter()
@@ -141,6 +141,13 @@ export default function AdminPage() {
               className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-dark transition-colors"
             >
               {isZh ? '新增作品' : 'New Work'}
+            </button>
+            <button
+              onClick={() => router.push('/admin/personal')}
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-bg-alt px-4 py-2.5 text-sm font-medium text-text hover:bg-bg transition-colors"
+            >
+              <UserCircle className="h-4 w-4" />
+              {isZh ? '个人中心' : 'Personal Center'}
             </button>
             <button
               onClick={() => router.push('/admin/works')}

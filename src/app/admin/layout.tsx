@@ -3,10 +3,11 @@
 import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { LayoutDashboard, FolderKanban, Settings, LogOut, ChevronLeft, ChevronRight } from 'lucide-react'
+import { LayoutDashboard, FolderKanban, Settings, LogOut, ChevronLeft, ChevronRight, UserCircle } from 'lucide-react'
 
 const SIDEBAR_ITEMS = [
   { href: '/admin', icon: LayoutDashboard, labelZh: '控制台', labelEn: 'Dashboard' },
+  { href: '/admin/personal', icon: UserCircle, labelZh: '个人中心', labelEn: 'Personal Center' },
   { href: '/admin/works', icon: FolderKanban, labelZh: '作品管理', labelEn: 'Works' },
   { href: '/admin/settings', icon: Settings, labelZh: '网站设置', labelEn: 'Settings' },
 ]

@@ -9,6 +9,9 @@ import { works } from '@/data/works';
 import { siteConfig } from '@/data/site-config';
 import { STATUS_COLORS, CATEGORY_EMOJI } from '@/lib/constants';
 import type { WorkItem, WorkEvidence } from '@/lib/types';
+import dynamic from 'next/dynamic';
+
+const WorkActions = dynamic(() => import('@/components/admin/WorkActions'), { ssr: false })
 
 /* ------------------------------------------------------------------ */
 /*  Status colour & category emoji (from shared constants)            */
@@ -241,6 +244,7 @@ function WorkDetailContent({ work }: { work: WorkItem }) {
         >
           {/* Cover image */}
           <div className="relative mb-8 aspect-[21/9] overflow-hidden rounded-2xl bg-bg-alt">
+            <WorkActions workId={work.id} workStatus={work.status} />
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5">
               <span className="select-none text-7xl opacity-20">{CATEGORY_EMOJI[work.category]}</span>
             </div>

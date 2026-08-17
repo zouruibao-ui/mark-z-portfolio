@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { getWorks, getSiteConfig, setJSON } from '@/lib/db'
-import { buildSeedWorks, buildSeedConfig } from '@/lib/seed'
+import { buildSeedWorks, buildSeedConfig, buildSeedAccess, buildSeedLayout, buildSeedContent } from '@/lib/seed'
 
-const KEYS = { works: 'markz:works', config: 'markz:config' }
+const KEYS = { works: 'markz:works', config: 'markz:config', access: 'markz:access', layout: 'markz:layout', content: 'markz:content' }
 
 /**
  * POST /api/init
@@ -13,7 +13,6 @@ export async function POST() {
   try {
     const results: string[] = []
 
-    // Check and seed works
     const existingWorks = await getWorks()
     if (existingWorks.length === 0) {
       const seedWorks = buildSeedWorks()
@@ -23,7 +22,6 @@ export async function POST() {
       results.push(`Works already exist (${existingWorks.length}), skipping`)
     }
 
-    // Check and seed config
     const existingConfig = await getSiteConfig()
     if (!existingConfig) {
       const seedConfig = buildSeedConfig()
@@ -33,9 +31,48 @@ export async function POST() {
       results.push('Config already exists, skipping')
     }
 
+    // Seed access control
+    const existingAccess = await getJSON(KEYS.access)
+    if (!existingAccess) {
+      await setJSON(KEYS.access, buildSeedAccess())
+      results.push('Seeded access control')
+    } else {
+      results.push('Access control already exists, skipping')
+    }
+
+    // Seed layout
+    const existingLayout = await getJSON(KEYS.layout)
+    if (!existingLayout) {
+      await setJSON(KEYS.layout, buildSeedLayout())
+      results.push('Seeded layout config')
+    } else {
+      results.push('Layout config already exists, skipping')
+    }
+
+    // Seed editable content
+    const existingContent = await getJSON(KEYS.content)
+    if (!existingContent) {
+      await setJSON(KEYS.content, buildSeedContent())
+      results.push('Seeded editable content')
+    } else {
+      results.push('Editable content already exists, skipping')
+    }
+
     return NextResponse.json({ success: true, results })
   } catch (error) {
     console.error('Init error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
+
+async function getJSON(key: string): Promise<any> {
+  try {
+    const { getSiteAccess, getLayoutConfig, getEditableContent } = await import('@/lib/db')
+    if (key === KEYS.access) return getSiteAccess()
+    if (key === KEYS.layout) return getLayoutConfig()
+    if (key === KEYS.content) return getEditableContent()
+    return null
+  } catch {
+    return null
   }
 }

@@ -7,6 +7,9 @@ import { useLanguage } from '@/context/LanguageContext';
 import { works } from '@/data/works';
 import { STATUS_COLORS, CATEGORY_EMOJI } from '@/lib/constants';
 import type { WorkItem, WorkCategory } from '@/lib/types';
+import dynamic from 'next/dynamic';
+
+const WorkActions = dynamic(() => import('@/components/admin/WorkActions'), { ssr: false })
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                              */
@@ -64,6 +67,7 @@ function WorkCard({ item }: { item: WorkItem }) {
       >
         {/* Cover image area */}
         <div className="relative aspect-[16/10] overflow-hidden bg-bg-alt">
+          <WorkActions workId={item.id} workStatus={item.status} />
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5 transition-transform duration-500 group-hover:scale-105">
             <span className="select-none text-5xl opacity-30 transition-opacity duration-300 group-hover:opacity-50">
               {CATEGORY_EMOJI[item.category]}

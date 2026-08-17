@@ -1,4 +1,5 @@
 import 'server-only'
+import type { SiteAccessControl, SiteMode, LayoutConfig, EditableContent, PersonalCenterStats } from '@/lib/types'
 
 /* ============================================================
    Storage layer — Upstash Redis in production, JSON file locally
@@ -52,6 +53,9 @@ const KEYS = {
   config: 'markz:config',
   verified: 'markz:verified',
   code: 'markz:code',
+  access: 'markz:access',
+  layout: 'markz:layout',
+  content: 'markz:content',
 } as const
 
 /* ---------------- Lazy KV client ---------------- */
@@ -233,3 +237,88 @@ export async function isEmailVerified(email: string): Promise<boolean> {
 }
 
 export const isDev = typeof process !== 'undefined' && (!process.env.VERCEL || process.env.NODE_ENV === 'development')
+
+// ============================================================
+// Site Access Control
+// ============================================================
+
+export async function getSiteAccess(): Promise<SiteAccessControl> {
+  const access = await getJSON(KEYS.access)
+  return access || {
+    currentMode: 'open' as SiteMode,
+    schedules: [],
+    closedMessage: { zh: '网站正在维护中，请稍后再访问。', en: 'Site is under maintenance. Please check back later.' },
+    bypassToken: '',
+    bypassActive: false,
+  }
+}
+
+export async function saveSiteAccess(access: SiteAccessControl): Promise<void> {
+  await setJSON(KEYS.access, access)
+}
+
+// ============================================================
+// Layout Config
+// ============================================================
+
+export async function getLayoutConfig(): Promise<LayoutConfig> {
+  const layout = await getJSON(KEYS.layout)
+  return layout || {
+    sections: [
+      { id: 'hero', visible: true, order: 0 },
+      { id: 'featured-works', visible: true, order: 1 },
+      { id: 'skills', visible: true, order: 2 },
+      { id: 'evidence', visible: true, order: 3 },
+      { id: 'experience', visible: true, order: 4 },
+      { id: 'about-summary', visible: true, order: 5 },
+      { id: 'contact', visible: true, order: 6 },
+    ],
+    heroSubtitle: null,
+    aboutPhoto: '',
+  }
+}
+
+export async function saveLayoutConfig(layout: LayoutConfig): Promise<void> {
+  await setJSON(KEYS.layout, layout)
+}
+
+// ============================================================
+// Editable Content
+// ============================================================
+
+export async function getEditableContent(): Promise<EditableContent[]> {
+  const content = await getJSON(KEYS.content)
+  return Array.isArray(content) ? content : []
+}
+
+export async function saveEditableContent(items: EditableContent[]): Promise<void> {
+  await setJSON(KEYS.content, items)
+}
+
+export async function updateEditableContent(key: string, updates: Partial<EditableContent>): Promise<EditableContent | null> {
+  const items = await getEditableContent()
+  const idx = items.findIndex((c) => c.key === key)
+  if (idx === -1) return null
+  items[idx] = { ...items[idx], ...updates, updatedAt: new Date().toISOString() }
+  await setJSON(KEYS.content, items)
+  return items[idx]
+}
+
+// ============================================================
+// Stats
+// ============================================================
+
+export async function getPersonalStats(): Promise<PersonalCenterStats> {
+  const works = await getWorks()
+  const access = await getSiteAccess()
+  const layout = await getLayoutConfig()
+  return {
+    totalWorks: works.length,
+    publishedWorks: works.filter((w) => w.status === 'published').length,
+    totalViews: 0,
+    siteMode: access.currentMode,
+    sectionsVisible: layout.sections.filter((s) => s.visible).length,
+    sectionsHidden: layout.sections.filter((s) => !s.visible).length,
+    lastDeploy: process.env.VERCEL_GIT_COMMIT_SHA ? new Date().toISOString() : null,
+  }
+}

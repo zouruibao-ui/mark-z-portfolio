@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Plus, Edit, Trash2, Eye, GripVertical } from 'lucide-react'
+import { Plus, Edit, Trash2, Eye, Copy, GripVertical } from 'lucide-react'
 
 export default function AdminWorksList() {
   const router = useRouter()
@@ -36,6 +36,15 @@ export default function AdminWorksList() {
       setDeleteConfirm(null)
     } catch (e) {
       console.error('Failed to delete', e)
+    }
+  }
+
+  const handleDuplicate = async (id: string) => {
+    try {
+      await fetch(`/api/works/${id}/duplicate`, { method: 'POST' })
+      fetchWorks()
+    } catch (e) {
+      console.error('Failed to duplicate', e)
     }
   }
 
@@ -153,6 +162,13 @@ export default function AdminWorksList() {
                       >
                         <Edit className="h-4 w-4" />
                       </Link>
+                      <button
+                        onClick={() => handleDuplicate(work.id)}
+                        className="rounded-lg p-2 text-text-secondary hover:text-primary hover:bg-primary/10 transition-colors"
+                        title={isZh ? '复制' : 'Duplicate'}
+                      >
+                        <Copy className="h-4 w-4" />
+                      </button>
                       {deleteConfirm === work.id ? (
                         <div className="flex items-center gap-1">
                           <button
