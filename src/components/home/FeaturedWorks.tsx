@@ -5,7 +5,8 @@ import { motion, useInView } from 'framer-motion';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { works } from '@/data/works';
-import type { WorkItem, WorkCategory, WorkStatus } from '@/lib/types';
+import { STATUS_COLORS, CATEGORY_EMOJI } from '@/lib/constants';
+import type { WorkItem } from '@/lib/types';
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                              */
@@ -35,28 +36,8 @@ const cardVariants = {
 };
 
 /* ------------------------------------------------------------------ */
-/*  Status colour mapping                                             */
+/*  Status colour & category emoji (from shared constants)            */
 /* ------------------------------------------------------------------ */
-
-const STATUS_COLORS: Record<WorkStatus, string> = {
-  awarded: 'bg-amber-100 text-amber-800 border-amber-200',
-  published: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-  'pending-result': 'bg-blue-100 text-blue-800 border-blue-200',
-  'in-progress': 'bg-purple-100 text-purple-800 border-purple-200',
-  archived: 'bg-gray-100 text-gray-600 border-gray-200',
-  'internal-only': 'bg-red-100 text-red-800 border-red-200',
-};
-
-/* ------------------------------------------------------------------ */
-/*  Category emoji (placeholder visuals until real images exist)       */
-/* ------------------------------------------------------------------ */
-
-const CATEGORY_EMOJI: Record<WorkCategory, string> = {
-  'brand-ip': '\u{1F3F7}️',
-  'journalism': '\u{1F4F0}',
-  'video-documentary': '\u{1F3AC}',
-  'ai-creative': '\u{1F916}',
-};
 
 /* ------------------------------------------------------------------ */
 /*  Single work card                                                  */

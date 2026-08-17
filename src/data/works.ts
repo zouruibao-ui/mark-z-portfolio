@@ -19,7 +19,7 @@ export const works: WorkItem[] = [
       zh: "凤凰网",
       en: "Phoenix News",
     },
-    coverImage: "/images/works/phoenix-cover.jpg",
+    coverImage: "/images/works/phoenix-cover.svg",
     summary: {
       zh: "在凤凰网从事融媒体内容策划、采编与短视频制作，产出多篇具有影响力的融媒体报道。",
       en: "Converged media content planning, reporting and short video production at Phoenix News, producing multiple impactful reports.",
@@ -61,7 +61,7 @@ export const works: WorkItem[] = [
       zh: "火星人智能科技",
       en: "Mars Intelligence Tech",
     },
-    coverImage: "/images/works/qige-cover.jpg",
+    coverImage: "/images/works/qige-cover.svg",
     summary: {
       zh: "搭建从灵感孵化、选题脚本、剪辑发布到数据复盘的完整AI短视频内容协作系统，包含四个核心模块。",
       en: "Built a complete AI short video content collaboration system covering inspiration incubation, topic scripting, editing/publishing, and data review.",
@@ -95,7 +95,7 @@ export const works: WorkItem[] = [
       zh: "华润江中 · 学院奖",
       en: "China Resources Jiangzhong · College Award",
     },
-    coverImage: "/images/works/college-award-cover.jpg",
+    coverImage: "/images/works/college-award-cover.svg",
     summary: {
       zh: "2025秋季学院奖微电影类别优秀奖，命题企业华润江中。团队作品，个人贡献为前期策划与部分拍摄。",
       en: "2025 Fall College Award Excellence Award in Micro Film category, commissioned by China Resources Jiangzhong. Team work, individual contribution in pre-production planning and partial filming.",
@@ -136,7 +136,7 @@ export const works: WorkItem[] = [
       zh: "个人项目",
       en: "Personal Project",
     },
-    coverImage: "/images/works/micro-film-cover.jpg",
+    coverImage: "/images/works/micro-film-cover.svg",
     summary: {
       zh: "使用ChatGPT、即梦Seedance与剪映制作的AI微电影，负责策划、脚本、AI分镜图、视频生成与剪辑全流程。当前为参赛中/结果待公布。",
       en: "AI micro film created with ChatGPT, Jimeng Seedance and Jianying. Responsible for full pipeline: planning, script, AI storyboard, video generation and editing. Currently in competition/pending results.",
@@ -170,7 +170,7 @@ export const works: WorkItem[] = [
       zh: "春播杯",
       en: "Spring Farming Cup",
     },
-    coverImage: "/images/works/farming-cover.jpg",
+    coverImage: "/images/works/farming-cover.svg",
     summary: {
       zh: "参与春播杯直播助农活动，负责直播策划、商品推广与内容执行。",
       en: "Participated in Spring Farming Cup live streaming for agricultural support, responsible for live planning, product promotion and content execution.",

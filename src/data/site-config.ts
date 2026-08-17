@@ -9,18 +9,19 @@ export const siteConfig = {
     en: "Mark Z's portfolio showcasing brand content, international communication & AI creative works",
   },
   author: "Mark Z (邹瑞宝)",
-  email: "mark@example.com",
-  phone: "138 0000 8000",
-  wechatQr: "/images/wechat-qr.jpg",
+  email: "zouruibao@gmail.com",
+  phone: "+86 138 0000 8000",
+  wechatQr: "/images/wechat-qr.svg",
   socialLinks: [
-    { platform: "LinkedIn", url: "#", label: "LinkedIn" },
+    { platform: "LinkedIn", url: "https://www.linkedin.com/in/zouruibao", label: "LinkedIn" },
+    { platform: "GitHub", url: "https://github.com/zouruibao-ui", label: "GitHub" },
   ],
   jobStatus: {
     zh: "📌 开放机会中 — 品牌内容 / 海外社媒 / AI产品内容",
     en: "📌 Open to opportunities — Brand Content / Global Social / AI Product Content",
   },
-  adminEmail: "admin@markz.com",
-  adminBackupEmail: "backup@markz.com",
+  adminEmail: "zouruibao@gmail.com",
+  adminBackupEmail: "zouruibao@gmail.com",
 };
 
 export const skills = [

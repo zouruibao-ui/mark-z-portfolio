@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
+  <rect width="300" height="300" fill="#F3F4F6" rx="12"/>
+  <rect x="40" y="40" width="220" height="220" fill="none" stroke="#10B981" stroke-width="2" rx="8"/>
+  <text x="150" y="150" text-anchor="middle" font-family="Inter, sans-serif" font-size="18" fill="#10B981">微信</text>
+  <text x="150" y="180" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#6B7280">WeChat</text>
+  <text x="150" y="210" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#9CA3AF">二维码待补充</text>
+</svg>
